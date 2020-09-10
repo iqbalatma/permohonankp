@@ -45,12 +45,4 @@ if (isset($_POST['submit'])) {
     } else {
         echo "Gagal";
     }
-
-    // echo $nim . ' ' . $pwd;
-
 }
-
-
-
-
-var_dump($data_mahasiswa[0]['MAHASISWA']['nim']);

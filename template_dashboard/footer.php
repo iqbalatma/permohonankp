@@ -68,75 +68,27 @@
     })
 
 
+    $("#smartwizard").on("stepContent", function(e, anchorObject, stepIndex, stepDirection) {
+        // var data = [];
+        // var nama_perusahaan = document.getElementById("nama_perusahaan").value;
+        // var alamat_perusahaan = document.getElementById("alamat_perusahaan").value;
+        // var deskripsi_kegiatan = document.getElementById("deskripsi_kegiatan").value;
+        // var kategori = document.getElementById("kategori").value;
+
+        // data.push(nama_perusahaan);
+        // data.push(alamat_perusahaan);
+        // data.push(deskripsi_kegiatan);
+        // data.push(kategori);
+        if (stepIndex == 1) {
+
+        }
+        if (stepIndex == 2) {
+            // saat dari step 2 ke 3 maka semua data akan di masukkan kedalam database
 
 
+        }
 
-    // $('#submit_form1').click(function() {
-
-    //     // alert("Test");
-    //     // var error_email = '';
-    //     // var error_password = '';
-    //     // var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
-    //     // if ($.trim($('#email').val()).length == 0) {
-    //     //     error_email = 'Email is required';
-    //     //     $('#error_email').text(error_email);
-    //     //     $('#email').addClass('has-error');
-    //     // } else {
-    //     //     if (!filter.test($('#email').val())) {
-    //     //         error_email = 'Invalid Email';
-    //     //         $('#error_email').text(error_email);
-    //     //         $('#email').addClass('has-error');
-    //     //     } else {
-    //     //         error_email = '';
-    //     //         $('#error_email').text(error_email);
-    //     //         $('#email').removeClass('has-error');
-    //     //     }
-    //     // }
-
-    //     // if ($.trim($('#password').val()).length == 0) {
-    //     //     error_password = 'Password is required';
-    //     //     $('#error_password').text(error_password);
-    //     //     $('#password').addClass('has-error');
-    //     // } else {
-    //     //     error_password = '';
-    //     //     $('#error_password').text(error_password);
-    //     //     $('#password').removeClass('has-error');
-    //     // }
-    //     // $('#form_1').removeClass('active active_tab1');
-    //     // $('#form_1').removeAttr('href data-toggle');
-    //     // $('#step-1').removeClass('active');
-    //     // $('#form_1').addClass('inactive_tab1');
-    //     // $('#form_2').removeClass('inactive_tab1');
-    //     // $('#form_2').addClass('active_tab1 active');
-    //     // $('#form_2').attr('href', '#step-2');
-    //     // $('#form_2').attr('data-toggle', 'tab');
-    //     // $('#step-2').addClass('active in');
-
-
-    //     $('#form_1').removeClass('active active_tab1');
-    //     $('#form_1').removeAttr('href data-toggle');
-    //     $('#step-1').removeClass('active');
-    //     $('#form_1').addClass('inactive_tab1');
-    //     $('#form_2').removeClass('inactive_tab1');
-    //     $('#form_2').addClass('active_tab1 active');
-    //     $('#form_2').attr('href', '#step-2');
-    //     $('#form_2').attr('data-toggle', 'tab');
-    //     $('#step-2').addClass('active in');
-    //     // if (error_email != '' || error_password != '') {
-    //     //     return false;
-    //     // } else {
-    //     //     $('#form_1').removeClass('active active_tab1');
-    //     //     $('#form_1').removeAttr('href data-toggle');
-    //     //     $('#step-1').removeClass('active');
-    //     //     $('#form_1').addClass('inactive_tab1');
-    //     //     $('#form_2').removeClass('inactive_tab1');
-    //     //     $('#form_2').addClass('active_tab1 active');
-    //     //     $('#form_2').attr('href', '#step-2');
-    //     //     $('#form_2').attr('data-toggle', 'tab');
-    //     //     $('#step-2').addClass('active in');
-    //     // }
-    // });
+    });
 </script>
 </body>
 

@@ -151,10 +151,12 @@ include('template_dashboard/header.php') ?>
                                     <!-- Step 1 -->
                                     <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                                         <div class="container">
-                                            <form action="progressstep1.php" method="POST">
+
+                                            <!-- FORM PENGAJUAN -->
+                                            <form action="progressstep1.php" method="POST" id="form_perusahaan" class="form_pengajuan">
                                                 <div class="form-group">
                                                     <label for="namaPerusahaan">Nama Perusahaan / Instansi</label>
-                                                    <select name="nama_perusahaan" class="form-control">
+                                                    <select name="nama_perusahaan" class="form-control" id="nama_perusahaan">
                                                         <option disabled selected> Pilih Perusahaan </option>
                                                         <?php
                                                         $query = mysqli_query($connect, "SELECT * FROM perusahaan");
@@ -162,7 +164,7 @@ include('template_dashboard/header.php') ?>
 
 
                                                         ?>
-                                                            <option value="<?= $data_perusahaan['id_perusahaan'] ?>"><?= $data_perusahaan['nama_perusahaan'] ?></option>
+                                                            <option value="<?= $data_perusahaan['nama_perusahaan'] ?>"><?= $data_perusahaan['nama_perusahaan'] ?></option>
 
                                                         <?php }; ?>
                                                     </select>
@@ -170,7 +172,7 @@ include('template_dashboard/header.php') ?>
 
                                                 <div class="form-group">
                                                     <label for="alamatPerusahaan">Alamat Perusahaan / Instansi</label>
-                                                    <select name="alamat_perusahaan" class="form-control">
+                                                    <select name="alamat_perusahaan" class="form-control" id="alamat_perusahaan">
                                                         <option disabled selected> Pilih Alamat Perusahaan </option>
                                                         <?php
                                                         $query = mysqli_query($connect, "SELECT * FROM perusahaan");
@@ -178,7 +180,7 @@ include('template_dashboard/header.php') ?>
 
 
                                                         ?>
-                                                            <option value="<?= $data_perusahaan['id_perusahaan'] ?>"><?= $data_perusahaan['alamat_perusahaan'] ?></option>
+                                                            <option value="<?= $data_perusahaan['alamat_perusahaan'] ?>"><?= $data_perusahaan['alamat_perusahaan'] ?></option>
 
                                                         <?php }; ?>
                                                     </select>
@@ -194,6 +196,9 @@ include('template_dashboard/header.php') ?>
                                                     <input type="text" name="kategori" class="form-control" id="kategori" placeholder="Example : Maintenance" required>
                                                 </div>
                                             </form>
+
+
+                                            <!-- MODAL !! -->
                                             <p>Jika data perusahaan yang saudara tuju tidak ada dalam list silahkan lakukan pengajuan melalui form berikut <a href="" data-toggle="modal" data-target="#exampleModal">Pengajuan</a></p>
 
                                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -234,63 +239,137 @@ include('template_dashboard/header.php') ?>
                                         <table class="table table-hover">
                                             <tr>
                                                 <td class="pt-3">Masukkan NIM mahasiswa</td>
-                                                <td>
-                                                    <form action="proses_permohonan.php" method="POST">
-                                                        <div class="form-group">
-                                                            <input type="text" name="namaPerusahaan" class="form-control" id="namaPerusahaan" placeholder="Contoh : 1011****" required>
-                                                        </div>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">Cari Mahasiswa</button>
-                                                    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Detail Mahasiswa</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <label for="NIM">NIM Mahasiswa</label>
-                                                                        <input type="text" name="NIM" class="form-control" id="NIM" placeholder="Tampil NIM Mahasiswa" required>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="namaMahasiswa">Nama Mahasiswa</label>
-                                                                        <input type="text" name="namaMahasiswa" class="form-control" id="namaMahasiswa" placeholder="Tampil Nama Mahasiswa" required>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="statusKP">Status</label>
-                                                                        <select class="form-control">
-                                                                            <option>Status</option>
-                                                                            <option>Co-Leader</option>
-                                                                            <option>Anggota</option>
-                                                                        </select>
-                                                                    </div>
 
+
+
+                                                <!-- FORM CARI -->
+                                                <td>
+                                                    <form action="dashboard.php#step-2" method="POST">
+                                                        <div class="form-group">
+                                                            <input type="text" name="nim_mahasiswa" class="form-control" id="nim_mahasiswa" placeholder="Contoh : 1011****" required>
+                                                        </div>
+                                                </td>
+
+
+
+                                                <!-- FORM MODAL -->
+                                                <td>
+                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" name="button_cari">Cari Mahasiswa</button></form>
+                                                </td>
+                                                <?php
+                                                if (isset($_POST["button_cari"])) {
+                                                    $data = file_get_contents('C:\xampp\htdocs\permohonankp\datamahasiswa.json');
+                                                    $data_mahasiswa = json_decode($data, true);
+                                                    $nim_mahasiswa = $_POST["nim_mahasiswa"];
+                                                    $i = 0;
+                                                    $ada = FALSE;
+                                                    while ($i <= count($data_mahasiswa)) {
+                                                        if ($data_mahasiswa[$i]['MAHASISWA']['nim'] == $nim_mahasiswa) {
+                                                            // KALAU NIMNYA ADA
+                                                            $ada = TRUE;
+
+
+
+                                                            break;
+                                                        } else {
+                                                            // KALAU NIMNYA GA ADA
+                                                            $ada = FALSE;
+                                                            // break;
+                                                        }
+
+                                                        $i++;
+                                                    }
+                                                    if ($ada) {
+                                                        $index = $i;
+                                                        $nim_mahasiswa = $data_mahasiswa[$index]['MAHASISWA']['nim'];
+                                                        $nama_mahasiswa = $data_mahasiswa[$index]['MAHASISWA']['nama'];
+
+                                                        $progress_masuk = mysqli_query($connect, "INSERT INTO mahasiswa VALUES('', '$nim_mahasiswa', '$nama_mahasiswa','Anggota', 1)");
+                                                        $ada = FALSE;
+                                                    }
+                                                }
+
+                                                ?>
+
+                                                <!-- MODAL -->
+                                                <!-- <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Detail Mahasiswa</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label for="NIM">NIM Mahasiswa</label>
+                                                                    <input type="text" name="NIM" class="form-control" id="NIM" placeholder="Tampil NIM Mahasiswa" required>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="button" class="btn btn-primary">Tambah Anggota</button>
+                                                                <div class="form-group">
+                                                                    <label for="namaMahasiswa">Nama Mahasiswa</label>
+                                                                    <input type="text" name="namaMahasiswa" class="form-control" id="namaMahasiswa" placeholder="Tampil Nama Mahasiswa" required>
                                                                 </div>
+                                                                <div class="form-group">
+                                                                    <label for="statusKP">Status</label>
+                                                                    <select class="form-control">
+                                                                        <option>Status</option>
+                                                                        <option>Co-Leader</option>
+                                                                        <option>Anggota</option>
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Tambah Anggota</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </div> -->
+
                                             </tr>
                                         </table>
+
+
+
+                                        <!-- TABEL DATA PENGAJUAN MAHASISWA-->
                                         <table class="table table-hover table-light">
                                             <tr class="table-primary">
                                                 <th>No</th>
                                                 <th>NIM Mahasiswa</th>
                                                 <th>Nama Mahasiswa</th>
+                                                <th>Posisi</th>
                                                 <th>Status</th>
                                                 <th>Nama Perusahaan</th>
                                                 <th>Action</th>
                                             </tr>
+
+                                            <?php
+                                            $no = 1;
+                                            $data_mahasiswa_lengkap = mysqli_query($connect, "SELECT * FROM mahasiswa WHERE id_kelompok='1'");
+
+                                            while ($d = mysqli_fetch_array($data_mahasiswa_lengkap)) {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $no++; ?></td>
+                                                    <td><?php echo $d['nim_mahasiswa']; ?></td>
+                                                    <td><?php echo $d['nama_mahasiswa']; ?></td>
+                                                    <td><?php echo $d['posisi']; ?></td>
+
+
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+
+
+
+                                            </tr>
                                         </table>
+
+
+
                                     </div>
                                 </div>
 
