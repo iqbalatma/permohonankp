@@ -15,5 +15,40 @@
             "email": "riefky_ramadhan@email.unikom.ac.id",
             "password": "admin"
         }
+    },
+    {
+        "STATUS": "OK",
+        "MAHASISWA": {
+            "nim": "10117126",
+            "nama": "BAMBANG SIKAMPANG",
+            "email": "Bapaqkaulah@email.unikom.ac.id",
+            "password": "admin"
+        }
+    },
+    {
+        "STATUS": "OK",
+        "MAHASISWA": {
+            "nim": "10117127",
+            "nama": "JOKO SUTOYO",
+            "email": "jokoh@email.unikom.ac.id",
+            "password": "admin"
+        }
+    },
+    {
+        "STATUS": "OK",
+        "MAHASISWA": {
+            "nim": "10117128",
+            "nama": "JOKO SUTOYO",
+            "email": "jokoh@email.unikom.ac.id",
+            "password": "admin"
+        }
+    }, {
+        "STATUS": "OK",
+        "MAHASISWA": {
+            "nim": "10117129",
+            "nama": "JOKO SUSILO SUTOYO",
+            "email": "jokoh@email.unikom.ac.id",
+            "password": "admin"
+        }
     }
 ]

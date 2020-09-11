@@ -156,7 +156,7 @@ include('template_dashboard/header.php') ?>
                                             <form action="progressstep1.php" method="POST" id="form_perusahaan" class="form_pengajuan">
                                                 <div class="form-group">
                                                     <label for="namaPerusahaan">Nama Perusahaan / Instansi</label>
-                                                    <select name="nama_perusahaan" class="form-control" id="nama_perusahaan">
+                                                    <select name="id_perusahaan" class="form-control" id="id_perusahaan">
                                                         <option disabled selected> Pilih Perusahaan </option>
                                                         <?php
                                                         $query = mysqli_query($connect, "SELECT * FROM perusahaan");
@@ -164,7 +164,7 @@ include('template_dashboard/header.php') ?>
 
 
                                                         ?>
-                                                            <option value="<?= $data_perusahaan['nama_perusahaan'] ?>"><?= $data_perusahaan['nama_perusahaan'] ?></option>
+                                                            <option value="<?= $data_perusahaan['id_perusahaan'] ?>"><?= $data_perusahaan['nama_perusahaan'] ?></option>
 
                                                         <?php }; ?>
                                                     </select>
@@ -195,6 +195,7 @@ include('template_dashboard/header.php') ?>
                                                     <label for="kategori">Bidang kategori kerja praktek</label>
                                                     <input type="text" name="kategori" class="form-control" id="kategori" placeholder="Example : Maintenance" required>
                                                 </div>
+
                                             </form>
 
 
@@ -254,10 +255,16 @@ include('template_dashboard/header.php') ?>
 
                                                 <!-- FORM MODAL -->
                                                 <td>
-                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" name="button_cari">Cari Mahasiswa</button></form>
+                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" name="button_tambah">Tambah Mahasiswa</button></form>
                                                 </td>
+
                                                 <?php
-                                                if (isset($_POST["button_cari"])) {
+                                                $ketua_kelompok = $_SESSION['nim'];
+
+
+
+
+                                                if (isset($_POST["button_tambah"])) {
                                                     $data = file_get_contents('C:\xampp\htdocs\permohonankp\datamahasiswa.json');
                                                     $data_mahasiswa = json_decode($data, true);
                                                     $nim_mahasiswa = $_POST["nim_mahasiswa"];
@@ -267,14 +274,10 @@ include('template_dashboard/header.php') ?>
                                                         if ($data_mahasiswa[$i]['MAHASISWA']['nim'] == $nim_mahasiswa) {
                                                             // KALAU NIMNYA ADA
                                                             $ada = TRUE;
-
-
-
                                                             break;
                                                         } else {
                                                             // KALAU NIMNYA GA ADA
                                                             $ada = FALSE;
-                                                            // break;
                                                         }
 
                                                         $i++;
@@ -284,49 +287,40 @@ include('template_dashboard/header.php') ?>
                                                         $nim_mahasiswa = $data_mahasiswa[$index]['MAHASISWA']['nim'];
                                                         $nama_mahasiswa = $data_mahasiswa[$index]['MAHASISWA']['nama'];
 
-                                                        $progress_masuk = mysqli_query($connect, "INSERT INTO mahasiswa VALUES('', '$nim_mahasiswa', '$nama_mahasiswa','Anggota', 1)");
+
+                                                        // $query = mysqli_query($connect, "SELECT *, COUNT( * ) AS total FROM mahasiswa GROUP BY id_kelompok=$id");
+
+
+                                                        $query = mysqli_query($connect, "SELECT * FROM kelompok_mahasiswa WHERE ketua_kelompok=$ketua_kelompok");
+                                                        $row = mysqli_fetch_row($query);
+                                                        $cek_user = mysqli_num_rows($query);
+                                                        if ($cek_user > 0) {
+                                                            $id2 = $row[0];
+                                                        }
+                                                        $query_jumlah = mysqli_query($connect, "SELECT *, COUNT( * ) AS total FROM mahasiswa WHERE id_kelompok=$id2");
+                                                        $row_jumlah = mysqli_fetch_row($query_jumlah);
+                                                        $jumlah_mahasiswa = $row_jumlah[4];
+
+                                                        if ($jumlah_mahasiswa <= 2) {
+
+                                                            $query = mysqli_query($connect, "SELECT * FROM kelompok_mahasiswa WHERE ketua_kelompok=$ketua_kelompok");
+                                                            $row = mysqli_fetch_row($query);
+                                                            $cek_user = mysqli_num_rows($query);
+                                                            if ($cek_user > 0) {
+                                                                $id = $row[0];
+                                                            }
+                                                            $progress_masuk = mysqli_query($connect, "INSERT INTO mahasiswa VALUES('$nim_mahasiswa', '$nama_mahasiswa','Anggota', $id)");
+                                                        } else {
+                                                            echo "UDAH PENUH BOSS";
+                                                        }
+
                                                         $ada = FALSE;
                                                     }
                                                 }
 
                                                 ?>
 
-                                                <!-- MODAL -->
-                                                <!-- <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Detail Mahasiswa</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <label for="NIM">NIM Mahasiswa</label>
-                                                                    <input type="text" name="NIM" class="form-control" id="NIM" placeholder="Tampil NIM Mahasiswa" required>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="namaMahasiswa">Nama Mahasiswa</label>
-                                                                    <input type="text" name="namaMahasiswa" class="form-control" id="namaMahasiswa" placeholder="Tampil Nama Mahasiswa" required>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="statusKP">Status</label>
-                                                                    <select class="form-control">
-                                                                        <option>Status</option>
-                                                                        <option>Co-Leader</option>
-                                                                        <option>Anggota</option>
-                                                                    </select>
-                                                                </div>
 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Tambah Anggota</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
 
                                             </tr>
                                         </table>
@@ -347,20 +341,45 @@ include('template_dashboard/header.php') ?>
 
                                             <?php
                                             $no = 1;
-                                            $data_mahasiswa_lengkap = mysqli_query($connect, "SELECT * FROM mahasiswa WHERE id_kelompok='1'");
+                                            $query = mysqli_query($connect, "SELECT * FROM kelompok_mahasiswa WHERE ketua_kelompok=$ketua_kelompok");
+                                            $row = mysqli_fetch_row($query);
+                                            $cek_user = mysqli_num_rows($query);
+                                            $data_mahasiswa_lengkap = "";
+                                            if ($cek_user > 0) {
+                                                $id = $row[0];
+                                                $data_mahasiswa_lengkap = mysqli_query($connect, "SELECT * FROM mahasiswa INNER JOIN kelompok_mahasiswa ON mahasiswa.id_kelompok = kelompok_mahasiswa.id_kelompok INNER JOIN perusahaan ON kelompok_mahasiswa.id_perusahaan = perusahaan.id_perusahaan WHERE kelompok_mahasiswa.id_kelompok='$id' ORDER BY mahasiswa.posisi DESC");
 
-                                            while ($d = mysqli_fetch_array($data_mahasiswa_lengkap)) {
+
+                                                while ($d = mysqli_fetch_array($data_mahasiswa_lengkap)) {
                                             ?>
-                                                <tr>
-                                                    <td><?php echo $no++; ?></td>
-                                                    <td><?php echo $d['nim_mahasiswa']; ?></td>
-                                                    <td><?php echo $d['nama_mahasiswa']; ?></td>
-                                                    <td><?php echo $d['posisi']; ?></td>
+                                                    <tr>
+                                                        <td><?php echo $no++; ?></td>
+                                                        <td><?php echo $d['nim_mahasiswa']; ?></td>
+                                                        <td><?php echo $d['nama_mahasiswa']; ?></td>
+                                                        <td><?php echo $d['posisi']; ?></td>
+                                                        <td><?php echo "Belum Di Terima"; ?></td>
+                                                        <td><?php echo $d['nama_perusahaan']; ?></td>
+                                                        <td>
+                                                            <?php if ($d['posisi'] != "Ketua") {
 
 
-                                                </tr>
+                                                            ?>
+                                                                <button class="btn btn-danger" data-toggle="" data-target="" name="button_Hapus">Hapus</button>
+                                                            <?php
+                                                            } ?>
+
+                                                        </td>
+
+
+                                                    </tr>
                                             <?php
+                                                }
                                             }
+
+
+
+
+
                                             ?>
 
 
@@ -378,12 +397,18 @@ include('template_dashboard/header.php') ?>
                                     <div class="container-fluid">
                                         <table class="table table-hover table-light">
                                             <tr class="table-primary">
-                                                <th>No</th>
-                                                <th>NIM Mahasiswa</th>
-                                                <th>Nama Mahasiswa</th>
-                                                <th>Status</th>
+                                                <th>NIM Ketua Kelompok</th>
+                                                <th>Nama Ketua Kelompok</th>
                                                 <th>Nama Perusahaan</th>
-                                                <th>Approve/Reject</th>
+                                                <th>Status Pengajuan</th>
+                                                <th>Link Surat Pengantar KP</th>
+                                            </tr>
+                                            <?php
+                                            $query = mysqli_query($connect, 'select * from kelompok_mahasiswa inner join perusahaan on kelompok_mahasiswa.id_perusahaan=perusahaan.id_perusahaan where id_kelompok=')
+                                            ?>
+                                            <tr>
+
+                                                <td></td>
                                             </tr>
                                         </table>
                                     </div>

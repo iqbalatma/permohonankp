@@ -41,6 +41,7 @@ if (isset($_POST['submit'])) {
         $_SESSION["nim"] = $nim;
         $_SESSION["is_logged"] = TRUE;
         $_SESSION['nama'] = $nama;
+        $_SESSION['pengajuan_perusahaan'] = FALSE;
         header("Location: dashboard.php");
     } else {
         echo "Gagal";

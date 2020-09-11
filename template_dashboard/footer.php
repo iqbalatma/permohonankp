@@ -80,6 +80,7 @@
         // data.push(deskripsi_kegiatan);
         // data.push(kategori);
         if (stepIndex == 1) {
+            $("#form_perusahaan").submit();
 
         }
         if (stepIndex == 2) {
