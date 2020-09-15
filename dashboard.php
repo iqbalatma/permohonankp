@@ -349,6 +349,11 @@ include('template_dashboard/header.php') ?>
                                                 $id = $row[0];
                                                 $data_mahasiswa_lengkap = mysqli_query($connect, "SELECT * FROM mahasiswa INNER JOIN kelompok_mahasiswa ON mahasiswa.id_kelompok = kelompok_mahasiswa.id_kelompok INNER JOIN perusahaan ON kelompok_mahasiswa.id_perusahaan = perusahaan.id_perusahaan WHERE kelompok_mahasiswa.id_kelompok='$id' ORDER BY mahasiswa.posisi DESC");
 
+                                                $data = mysqli_query($connect, "SELECT * FROM surat WHERE id_surat = $ketua_kelompok");
+                                                $data = mysqli_fetch_row($data);
+                                                $data = $data[2];
+
+
 
                                                 while ($d = mysqli_fetch_array($data_mahasiswa_lengkap)) {
                                             ?>
@@ -357,14 +362,14 @@ include('template_dashboard/header.php') ?>
                                                         <td><?php echo $d['nim_mahasiswa']; ?></td>
                                                         <td><?php echo $d['nama_mahasiswa']; ?></td>
                                                         <td><?php echo $d['posisi']; ?></td>
-                                                        <td><?php echo "Belum Di Terima"; ?></td>
+                                                        <td><?php echo $data ?></td>
                                                         <td><?php echo $d['nama_perusahaan']; ?></td>
                                                         <td>
                                                             <?php if ($d['posisi'] != "Ketua") {
 
 
                                                             ?>
-                                                                <button class="btn btn-danger" data-toggle="" data-target="" name="button_Hapus">Hapus</button>
+                                                                <a href="hapus_mahasiswa.php?nim=<?= $d['nim_mahasiswa'];; ?>" button class="btn btn-danger" data-toggle="" data-target="" name="button_Hapus">Hapus</a>
                                                             <?php
                                                             } ?>
 
@@ -404,12 +409,44 @@ include('template_dashboard/header.php') ?>
                                                 <th>Link Surat Pengantar KP</th>
                                             </tr>
                                             <?php
-                                            $query = mysqli_query($connect, 'select * from kelompok_mahasiswa inner join perusahaan on kelompok_mahasiswa.id_perusahaan=perusahaan.id_perusahaan where id_kelompok=')
-                                            ?>
-                                            <tr>
 
-                                                <td></td>
-                                            </tr>
+                                            $query = mysqli_query($connect, "SELECT * FROM kelompok_mahasiswa INNER JOIN perusahaan ON kelompok_mahasiswa.id_perusahaan=perusahaan.id_perusahaan  WHERE id_kelompok=$id");
+
+
+                                            $query2 = mysqli_query($connect, "SELECT * FROM surat WHERE id_surat=$ketua_kelompok");
+                                            $row = mysqli_fetch_row($query2);
+                                            $status_surat = $row[2];
+                                            // $query2 = mysqli_query($connect, "SELECT * FROM mahasiswa WHERE nim_mahasiswa=$ketua_kelompok");
+                                            // $row2 = mysqli_fetch_row($query2);
+                                            // $nama_mahasiswa = $row2[1];
+                                            $nama_ketua = $_SESSION['nama'];
+
+                                            while ($d = mysqli_fetch_array($query)) {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $d['ketua_kelompok']; ?></td>
+                                                    <td><?php echo $nama_ketua; ?></td>
+                                                    <td><?php echo $d['nama_perusahaan']; ?></td>
+                                                    <td><?php echo $status_surat ?></td>
+                                                    <?php
+
+                                                    if ($status_surat == "Belum Di Approve") {
+                                                    ?>
+                                                        <td>Menunggu Persetujuan</td>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <td><a class="btn btn-primary" href="create_pdf.php?id_grup=<?= $id; ?>">Surat Pengantar</a></td>
+                                                    <?php
+                                                    } ?>
+
+
+
+                                                </tr>
+
+                                            <?php
+
+                                            } ?>
                                         </table>
                                     </div>
                                 </div>

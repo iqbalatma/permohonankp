@@ -20,9 +20,20 @@ $cek_user = mysqli_num_rows(mysqli_query($connect, "SELECT * FROM kelompok_mahas
 
 if ($cek_user < 1) {
 
-    $status_kelompok = "Belum Di Approve";
+    $status_surat = "Belum Di Approve";
     $id_perusahaan = $id_perusahaan;
-    $progress_masuk_kelompok = mysqli_query($connect, "INSERT INTO kelompok_mahasiswa VALUES('', '$ketua_kelompok', '$status_kelompok', '$deskripsi_kegiatan', '$bidang', $id_perusahaan)");
+
+
+    $tanggal = date('Y-m-d');
+    $progress_masuk_surat = mysqli_query($connect, "INSERT INTO surat VALUES('$ketua_kelompok','', '$status_surat', '$tanggal', '$tanggal')");
+
+    // $query = mysqli_query($connect, "SELECT * FROM surat WHERE id_surat=$ketua_kelompok");
+    // $row = mysqli_fetch_row($query);
+    // $id_surat = $row[5];
+
+
+
+    $progress_masuk_kelompok = mysqli_query($connect, "INSERT INTO kelompok_mahasiswa VALUES('', '$ketua_kelompok', '$deskripsi_kegiatan', '$bidang', '$id_perusahaan','$ketua_kelompok')");
 
 
 
