@@ -163,6 +163,7 @@ include('template_dashboard/header.php') ?>
 
                                             ?>
 
+
                                         </tr>
                                     <?php }; ?>
                                 </tbody>
@@ -237,10 +238,26 @@ include('template_dashboard/header.php') ?>
 
                                             <td><?= $data2['status_perusahaan']; ?></td>
                                             <td><?= $data2['jumlah_mahasiswa']; ?></td>
+
+                                            <?php $status_perusahaan = $data2['status_perusahaan'];
+                                            if ($status_perusahaan == "Belum Di Approve") {
+                                            ?>
+                                                <td><a href="proseskonfirmasiperusahaan.php?id_perusahaan_diterima=<?= $data2['id_perusahaan']; ?>" class="btn btn-success">Setujui</a><a href="proseskonfirmasiperusahaan.php?id_perusahaan_ditolak=<?= $data2['id_perusahaan']; ?>" class="btn btn-danger">Tolak</a></td>
+                                            <?php
+
+                                            } else {
+                                            ?>
+                                                <td>-</td>
+                                            <?php
+                                            }
+
+                                            ?>
+
                                         </tr>
                                     <?php
                                     }
                                     ?>
+
 
 
 

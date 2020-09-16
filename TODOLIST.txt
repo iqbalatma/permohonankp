@@ -18,6 +18,13 @@ TODO TERBARU :
     Backup :
 
 
+FORM ADMIN
+
+Saat surat ditolak, jangan langsung dihapus. status pengajuan akan berubah menjadi ditolak dengan pesan, kemudian diberikan kesempatan untuk melakukan pengajuan ulang.
+
+
+
+
     
     <!-- MODAL -->
 
