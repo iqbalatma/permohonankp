@@ -25,7 +25,7 @@ if ($cek_user < 1) {
 
 
     $tanggal = date('Y-m-d');
-    $progress_masuk_surat = mysqli_query($connect, "INSERT INTO surat VALUES('$ketua_kelompok','', '$status_surat', '$tanggal', '$tanggal')");
+    $progress_masuk_surat = mysqli_query($connect, "INSERT INTO surat VALUES('$ketua_kelompok','', '$status_surat', '$tanggal', '')");
 
     // $query = mysqli_query($connect, "SELECT * FROM surat WHERE id_surat=$ketua_kelompok");
     // $row = mysqli_fetch_row($query);
@@ -33,7 +33,7 @@ if ($cek_user < 1) {
 
 
 
-    $progress_masuk_kelompok = mysqli_query($connect, "INSERT INTO kelompok_mahasiswa VALUES('', '$ketua_kelompok', '$deskripsi_kegiatan', '$bidang', '$id_perusahaan','$ketua_kelompok')");
+    $progress_masuk_kelompok = mysqli_query($connect, "INSERT INTO kelompok_mahasiswa VALUES('', '$ketua_kelompok', '$deskripsi_kegiatan', '$bidang','Belum Diterima Perusahaan', '$id_perusahaan','$ketua_kelompok')");
 
 
 

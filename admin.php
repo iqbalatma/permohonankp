@@ -71,7 +71,7 @@ include('template_dashboard/header.php') ?>
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
                                 <img src="assets/AdminLTE-master/dist/img/unikom/logo_unikom.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                                <span class="brand-text font-weight-light"><?= $_SESSION['nama']; ?></span>
+                                <span class="brand-text font-weight-light"><?= $_SESSION['username']; ?></span>
                             </li>
                         </ol>
                     </div>
@@ -87,66 +87,100 @@ include('template_dashboard/header.php') ?>
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                            <h3 class="card-title">Data Kelompok Mahasiswa yang Mengajukan Kerja Praktek</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Rendering engine</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>ID Kelompok</th>
+                                        <th>NIM Ketua Kelompok</th>
+                                        <th>Nama Perusahaan</th>
+                                        <th>Alamat Perusahaan</th>
+                                        <th>Deskripsi Kegiatan</th>
+                                        <th>Bidang Kegiatan</th>
+                                        <th>Nomor Surat</th>
+                                        <th>Status Pengajuan</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Tanggal Disetujui</th>
+                                        <th>Action</th>
+                                        <th>Status Perusahaan</th>
+                                        <th>Konfirmasi Perusahaan</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 4.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td> 4</td>
-                                        <td>X</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 5.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td>5</td>
-                                        <td>C</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 5.5
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td>5.5</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 6
-                                        </td>
-                                        <td>Win 98+</td>
-                                        <td>6</td>
-                                        <td>A</td>
-                                    </tr>
+                                    <?php
 
+                                    $query = mysqli_query($connect, "SELECT * FROM kelompok_mahasiswa INNER JOIN perusahaan ON kelompok_mahasiswa.id_perusahaan = perusahaan.id_perusahaan INNER JOIN surat ON kelompok_mahasiswa.id_surat = surat.id_surat");
+
+
+                                    while ($data = mysqli_fetch_array($query)) {
+
+                                    ?>
+                                        <tr>
+                                            <td><?= $data['id_kelompok']; ?></td>
+                                            <td><?= $data['ketua_kelompok']; ?></td>
+                                            <td><?= $data['nama_perusahaan']; ?></td>
+                                            <td><?= $data['alamat_perusahaan']; ?></td>
+                                            <td><?= $data['deskripsi_kegiatan']; ?></td>
+                                            <td><?= $data['bidang_kegiatan']; ?></td>
+                                            <td><?= $data['nomor_surat']; ?></td>
+                                            <td><?= $data['status_surat']; ?></td>
+                                            <td><?= $data['tanggal_pengajuan']; ?></td>
+                                            <?php $tanggal_disetujui = $data['tanggal_disetujui'];
+                                            if ($tanggal_disetujui == '0000-00-00') {
+                                            ?>
+                                                <td>-</td>
+                                                <td><a href="progressaccept.php?terima_id=<?= $data['ketua_kelompok']; ?>" class="btn btn-success">Setujui</a><a href="progressaccept.php?tolak_id=<?= $data['id_kelompok']; ?>" class="btn btn-danger">Tolak</a></td>
+                                                <td><?= $data['status_kelompok']; ?></td>
+                                                <td>-</td>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <td><?= $data['tanggal_disetujui']; ?></td>
+                                                <td>-</td>
+                                                <td><?= $data['status_kelompok']; ?></td>
+                                                <?php $status_kelompok = $data['status_kelompok'];
+                                                if ($status_kelompok == 'Belum Diterima Perusahaan') {
+                                                ?>
+                                                    <td><a href="progresskonfirmasi.php?id_kelompok_ditolak=<?= $data['id_kelompok']; ?>" class="btn btn-warning">Surat Ditolak</a><a href="progresskonfirmasi.php?id_kelompok=<?= $data['id_kelompok']; ?>" class="btn btn-primary">Surat Diterima</a></td>
+                                                <?php
+
+
+                                                } else {
+                                                ?>
+                                                    <td>-</td>
+                                                <?php
+                                                }
+
+                                                ?>
+
+
+                                            <?php
+                                            }
+
+                                            ?>
+
+                                        </tr>
+                                    <?php }; ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Rendering engine</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>ID Kelompok</th>
+                                        <th>NIM Ketua Kelompok</th>
+                                        <th>Nama Perusahaan</th>
+                                        <th>Alamat Perusahaan</th>
+                                        <th>Deskripsi Kegiatan</th>
+                                        <th>Bidang Kegiatan</th>
+                                        <th>Nomor Surat</th>
+                                        <th>Status Pengajuan</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Tanggal Disetujui</th>
+                                        <th>Action</th>
+                                        <th>Status Perusahaan</th>
+                                        <th>Konfirmasi Perusahaan</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -157,85 +191,70 @@ include('template_dashboard/header.php') ?>
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">DataTable with default features</h3>
+                            <h3 class="card-title">Data Pengajuan Perusahaan</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Rendering engine</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>ID Perusahaan</th>
+                                        <th>Nama Perusahaan</th>
+                                        <th>Alamat Perusahaan</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Tanggal Disetujui</th>
+                                        <th>Status Pengajuan</th>
+                                        <th>Jumlah Mahasiswa</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 4.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td> 4</td>
-                                        <td>X</td>
-                                    </tr>
+                                    <?php
 
-                                    <tr>
-                                        <td>Gecko</td>
-                                        <td>Mozilla 1.8</td>
-                                        <td>Win 98+ / OSX.1+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gecko</td>
-                                        <td>Seamonkey 1.1</td>
-                                        <td>Win 98+ / OSX.2+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gecko</td>
-                                        <td>Epiphany 2.20</td>
-                                        <td>Gnome</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Webkit</td>
-                                        <td>Safari 1.2</td>
-                                        <td>OSX.3</td>
-                                        <td>125.5</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Webkit</td>
-                                        <td>Safari 1.3</td>
-                                        <td>OSX.3</td>
-                                        <td>312.8</td>
-                                        <td>A</td>
-                                    </tr>
+                                    $query2 = mysqli_query($connect, "SELECT * FROM perusahaan");
+
+                                    while ($data2 = mysqli_fetch_array($query2)) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $data2['id_perusahaan']; ?></td>
+                                            <td><?= $data2['nama_perusahaan']; ?></td>
+                                            <td><?= $data2['alamat_perusahaan']; ?></td>
+                                            <td><?= $data2['tanggal_pengajuan']; ?></td>
+                                            <?php $tanggal_disetujui = $data2['tanggal_disetujui'];
+
+                                            if ($tanggal_disetujui == "0000-00-00") {
+                                            ?>
+                                                <td>-</td>
+                                            <?php
+                                            } else {
+
+                                            ?>
+                                                <td><?= $data2['tanggal_disetujui']; ?></td>
+                                            <?php
+
+                                            }
+                                            ?>
+
+                                            <td><?= $data2['status_perusahaan']; ?></td>
+                                            <td><?= $data2['jumlah_mahasiswa']; ?></td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
 
 
 
-
-                                    <tr>
-                                        <td>Other browsers</td>
-                                        <td>All others</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>U</td>
-                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Rendering engine</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>ID Perusahaan</th>
+                                        <th>Nama Perusahaan</th>
+                                        <th>Alamat Perusahaan</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Tanggal Disetujui</th>
+                                        <th>Status Pengajuan</th>
+                                        <th>Jumlah Mahasiswa</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>

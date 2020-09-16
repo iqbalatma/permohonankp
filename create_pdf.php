@@ -52,13 +52,8 @@ $bulan_approve = $tanggal_approve[1];
 $tahun_approve = $tanggal_approve[0];
 $bulan_romawi = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-// $o = 0;
-// while ($o <= 12) {
 
-// 	$o++;
-// }
-
-switch ($tanggal_approve) {
+switch ($bulan_approve) {
 	case "01":
 		$bulan_approve = $bulan_romawi[0];
 		break;

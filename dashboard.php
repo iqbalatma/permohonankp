@@ -159,7 +159,7 @@ include('template_dashboard/header.php') ?>
                                                     <select name="id_perusahaan" class="form-control" id="id_perusahaan">
                                                         <option disabled selected> Pilih Perusahaan </option>
                                                         <?php
-                                                        $query = mysqli_query($connect, "SELECT * FROM perusahaan");
+                                                        $query = mysqli_query($connect, "SELECT * FROM perusahaan WHERE status_perusahaan='Sudah Di Approve'");
                                                         while ($data_perusahaan = mysqli_fetch_array($query)) {
 
 
@@ -175,7 +175,7 @@ include('template_dashboard/header.php') ?>
                                                     <select name="alamat_perusahaan" class="form-control" id="alamat_perusahaan">
                                                         <option disabled selected> Pilih Alamat Perusahaan </option>
                                                         <?php
-                                                        $query = mysqli_query($connect, "SELECT * FROM perusahaan");
+                                                        $query = mysqli_query($connect, "SELECT * FROM perusahaan WHERE status_perusahaan='Sudah Di Approve'");
                                                         while ($data_perusahaan = mysqli_fetch_array($query)) {
 
 

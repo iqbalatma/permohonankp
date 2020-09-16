@@ -11,7 +11,7 @@ $status_pengajuan = "Belum Di Approve";
 
 
 
-$progress_masuk = mysqli_query($connect, "INSERT INTO perusahaan VALUES('', '$nama_perusahaan', '$alamat_perusahaan', '$tanggal_pengajuan', '$status_pengajuan')");
+$progress_masuk = mysqli_query($connect, "INSERT INTO perusahaan VALUES('', '$nama_perusahaan', '$alamat_perusahaan', '$tanggal_pengajuan','', '$status_pengajuan', '')");
 
 if ($progress_masuk) {
     echo "Input Data Berhasil";
